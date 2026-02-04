@@ -1,0 +1,178 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-04T02:05:50.118Z",
+  "summary": "Diff adds a Motoko backend actor and a React frontend with routing, Internet Identity login UI, admin guard, tournament creation/verification/join hooks, wallet balance/transactions hooks, and admin panels for top-up/withdrawal requests. However, several spec items are either missing or not evidenced in the truncated backend and available frontend files (notably tournament lifecycle/audit fields, full wallet transaction schema, top-up statuses/UX fields, withdrawal fund reservation, and Nepali localization completeness).",
+  "missing_requirements": [
+    {
+      "id": "REQ-1",
+      "requirement": "At least one admin principal can be configured via an admin list stored in canister state; admin-only actions are rejected for non-admin callers.",
+      "reason": "Frontend includes admin checks (useIsCallerAdmin/AdminGuard), but backend evidence is truncated and does not show an admin list in state nor explicit checks on admin-only methods (verifyTournament, approveTopUpRequest, approve/complete withdrawal).",
+      "evidence": [
+        "backend/main.mo (truncated)",
+        "frontend/src/components/auth/AdminGuard.tsx",
+        "frontend/src/hooks/useAuth.ts"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "requirement": "Tournament lifecycle states must include at least Draft/Unverified, Verified/Open, In Progress, Completed, with admin-only verification; joining only allowed for verified/open; and auditable timestamps (createdAt, verifiedAt, completedAt).",
+      "reason": "Backend shows TournamentStatus as only #open/#ongoing/#finished plus a separate verified: Bool, but no Draft/Unverified state and no timestamp fields are shown. Join restrictions and admin-only verification are not evidenced in the truncated backend.",
+      "evidence": [
+        "backend/main.mo (truncated)"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "requirement": "Admins can finalize results for a completed tournament and trigger prize distribution to one or more winners’ in-app wallets.",
+      "reason": "Frontend shows only create/verify/join hooks; no finalize-results/prize-distribution hooks or UI are present in the diff. Backend truncated portion does not evidence finalize/prize distribution methods.",
+      "evidence": [
+        "frontend/src/hooks/useTournaments.ts",
+        "frontend/src/components/admin/CreateTournamentPanel.tsx",
+        "frontend/src/components/admin/VerifyTournamentPanel.tsx",
+        "backend/main.mo (truncated)"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "requirement": "Wallet transaction history records must include type (topup/entry_fee/prize/withdrawal), amount, status, createdAt, and optional reference metadata; frontend must show a paginated/scrollable transaction list.",
+      "reason": "Backend WalletTransaction type shown includes id/userId/amount/createdAt/transactionType but no status or reference metadata. Frontend includes a hook to fetch history, but no transaction list UI is shown in the provided diff summary (WalletPage file not included), and pagination/scroll behavior is not evidenced.",
+      "evidence": [
+        "backend/main.mo (truncated)",
+        "frontend/src/hooks/useWallet.ts"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "requirement": "Top-up requests: frontend form must allow amount and optional reference note; backend must store statuses Pending/Approved/Rejected; only admins can approve/reject; approval credits wallet and creates a wallet transaction; users can view their top-up request statuses.",
+      "reason": "Backend TopUpRequest status is only #pending/#completed (no Approved/Rejected). Frontend hook useCreateTopUpRequest accepts only Amount (no optional reference note), and no user-facing top-up status list is evidenced (only admin panel listing requests). Admin reject flow is not present.",
+      "evidence": [
+        "backend/main.mo (truncated)",
+        "frontend/src/hooks/useTopUps.ts",
+        "frontend/src/components/admin/TopUpRequestsPanel.tsx"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "requirement": "Withdrawals must reserve/deduct funds consistently upon request to prevent double-spend; validate requested amount <= available withdrawable balance; admin can approve/reject/mark completed; users can view list/statuses.",
+      "reason": "Withdrawal request types exist in backend and admin UI shows approve/mark completed, but the truncated backend does not evidence balance validation or reservation/deduction logic on request creation. User-facing withdrawal list/status screen is not evidenced in the diff summary (WithdrawPage not included).",
+      "evidence": [
+        "backend/main.mo (truncated)",
+        "frontend/src/components/admin/WithdrawalRequestsPanel.tsx (truncated)"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "requirement": "App localized for Nepali with centralized strings; no English placeholder copy remains in core flows (login, tournaments, wallet, top-up, withdraw).",
+      "reason": "There is an i18n t() function usage, but some UI strings are hard-coded (e.g., AppLayout title/footer contains English text like \"Built with\" and \"using\"). Also not all screens are visible in diff, so completeness across tournaments/wallet/top-up/withdraw cannot be confirmed.",
+      "evidence": [
+        "frontend/src/components/layout/AppLayout.tsx",
+        "frontend/src/components/auth/LoginScreen.tsx"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "requirement": "Core screens exist and are wired to backend calls using existing actor hook pattern; React Query used for data fetching and cache invalidation after mutations (join, approve, finalize).",
+      "reason": "Routes for all screens exist, and React Query hooks exist for some flows. But finalize-results flow is not evidenced, and the actual page implementations (DashboardPage, WalletPage, TopUpPage, WithdrawPage, AdminPage, TournamentDetailPage) are not shown in the diff summary, so wiring and cache invalidation for all required mutations can’t be verified.",
+      "evidence": [
+        "frontend/src/App.tsx",
+        "frontend/src/hooks/useTournaments.ts",
+        "frontend/src/hooks/useTopUps.ts",
+        "frontend/src/hooks/useWallet.ts"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "requirement": "Coherent visual theme across UI; avoid blue/purple primary palette.",
+      "reason": "Components use theme tokens (bg-background, border-primary, etc.), but the diff summary provides no tailwind/theme configuration showing the actual palette choice, so the \"not blue/purple\" constraint and overall theme coherence cannot be verified from the provided files.",
+      "evidence": [
+        "frontend/src/components/layout/AppLayout.tsx",
+        "frontend/src/components/layout/AppNav.tsx",
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "requirement": "Generated static image assets must exist under frontend/public/assets/generated with exact filenames app-logo.dim_512x512.png and hero-bg.dim_1600x900.png, and be visible in UI.",
+      "reason": "UI references the logo path, but the diff summary does not show the actual asset files being added (they may be among omitted added files). Also no evidence of the hero background image being referenced anywhere in the shown files.",
+      "evidence": [
+        "frontend/src/components/auth/LoginScreen.tsx",
+        "frontend/src/components/layout/AppLayout.tsx"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Admin initialization via a secret URL parameter token (caffeineAdminToken) and actor method _initializeAccessControlWithSecret.",
+      "reason": "BuildRequest requires an admin principal list stored in canister state; it does not request a secret-token bootstrap mechanism via URL params, nor an internal initialization method invoked from the frontend.",
+      "evidence": [
+        "frontend/src/hooks/useActor.ts"
+      ]
+    },
+    {
+      "description": "Top-up request model includes paymentProvider, payoutIdentifier, and transactionId fields (and lacks Approved/Rejected statuses).",
+      "reason": "BuildRequest top-up requests require amount and optional reference note with Pending/Approved/Rejected; adding payment-provider/payout fields is not requested and the status model diverges from the spec.",
+      "evidence": [
+        "backend/main.mo (truncated)"
+      ]
+    },
+    {
+      "description": "Withdrawal request includes payoutName field.",
+      "reason": "BuildRequest requires payout identifier plus optional note; payoutName is an extra field not requested.",
+      "evidence": [
+        "backend/main.mo (truncated)"
+      ]
+    },
+    {
+      "description": "Footer branding text linking to caffeine.ai.",
+      "reason": "Not requested in BuildRequest and introduces non-Nepali English copy in a primary layout component.",
+      "evidence": [
+        "frontend/src/components/layout/AppLayout.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.62,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/admin/CreateTournamentPanel.tsx",
+    "frontend/src/components/admin/TopUpRequestsPanel.tsx",
+    "frontend/src/components/admin/VerifyTournamentPanel.tsx",
+    "frontend/src/components/admin/WithdrawalRequestsPanel.tsx",
+    "frontend/src/components/auth/AccessDenied.tsx",
+    "frontend/src/components/auth/AdminGuard.tsx",
+    "frontend/src/components/auth/LoginButton.tsx",
+    "frontend/src/components/auth/LoginScreen.tsx",
+    "frontend/src/components/auth/ProfileSetupDialog.tsx",
+    "frontend/src/components/layout/AppLayout.tsx",
+    "frontend/src/components/layout/AppNav.tsx",
+    "frontend/src/hooks/queryKeys.ts",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useAuth.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useTopUps.ts",
+    "frontend/src/hooks/useTournaments.ts",
+    "frontend/src/hooks/useWallet.ts",
+    "frontend/src/hooks/useWithdrawals.ts",
+    "frontend/src/i18n/index.ts",
+    "frontend/src/i18n/np.ts",
+    "frontend/src/index.css",
+    "frontend/src/lib/tournamentStore.ts",
+    "frontend/src/main.tsx",
+    "frontend/src/pages/AdminPage.tsx",
+    "frontend/src/pages/DashboardPage.tsx",
+    "frontend/src/pages/TopUpPage.tsx",
+    "frontend/src/pages/TournamentDetailPage.tsx",
+    "frontend/src/pages/TournamentsPage.tsx",
+    "frontend/src/pages/WalletPage.tsx",
+    "frontend/src/pages/WithdrawPage.tsx",
+    "frontend/src/utils/errorMapping.ts",
+    "frontend/src/utils/urlParams.ts",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

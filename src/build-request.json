@@ -1,0 +1,193 @@
+{
+  "kind": "build_request",
+  "title": "Nepali cash-tournament game platform with verified tournaments, wallet top-ups, and withdrawals via IME Pay/Khalti",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Add Internet Identity authentication and a basic role model (regular user vs admin) so admins can verify tournaments and approve top-ups/withdrawals.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "I want a game that has verified tournaments and supports top-up, etc.",
+          "we should be able to withdraw our money from the tournaments. The withdrawal service should be available through IME Pay and Khalti."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Users can sign in/out with Internet Identity from the frontend.",
+        "Backend associates data with the caller principal.",
+        "At least one admin principal can be configured (e.g., via an admin list stored in canister state).",
+        "Admin-only actions (tournament verification, marking top-ups paid, marking withdrawals completed) are rejected for non-admin callers."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Implement a verified tournaments system: create tournaments, mark tournaments as verified (admin-only), allow users to join verified tournaments, record results, and distribute prizes to winners’ in-app wallets.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "I want a game that has verified tournaments"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend supports tournament lifecycle states including at least: Draft/Unverified, Verified/Open, In Progress, Completed.",
+        "Only admins can change a tournament to Verified/Open.",
+        "Only verified/open tournaments can be joined by users.",
+        "Joining a tournament charges an entry fee from the user’s in-app wallet (and fails if insufficient funds).",
+        "Admins can finalize results for a completed tournament and trigger prize distribution to one or more winners.",
+        "All key tournament actions are auditable via stored timestamps/status fields (e.g., createdAt, verifiedAt, completedAt)."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Add an in-app wallet with transaction history to support tournament entry fees, winnings credits, and admin-approved top-ups.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "supports top-up"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Each user has a wallet balance stored in the backend.",
+        "Backend records a transaction history with at least: type (topup/entry_fee/prize/withdrawal), amount, status, createdAt, and optional reference metadata.",
+        "Frontend shows current balance and a paginated or scrollable transaction list.",
+        "All wallet mutations happen in backend methods; frontend cannot directly change balances."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Implement wallet top-up requests: users can create a top-up request; admins can approve/mark it as paid; wallet balance updates only on admin approval.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "supports top-up"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Frontend provides a form to create a top-up request with amount and optional reference note.",
+        "Backend stores top-up requests with statuses (e.g., Pending, Approved, Rejected).",
+        "Only admins can approve/reject top-up requests.",
+        "Approving a top-up request credits the user’s wallet and creates a corresponding wallet transaction record.",
+        "Users can view the status of their top-up requests."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Implement tournament winnings withdrawal requests: users can request withdrawal of available wallet funds, select IME Pay or Khalti, provide payout identifier details, and track status; admins can approve/reject/mark completed.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "we should be able to withdraw our money from the tournaments. The withdrawal service should be available through IME Pay and Khalti."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Frontend allows creating a withdrawal request with: amount, method (IME Pay or Khalti), and a payout identifier (e.g., phone number or account ID) plus optional note.",
+        "Backend validates that requested amount is <= available withdrawable balance and blocks withdrawals when insufficient funds.",
+        "Creating a withdrawal request reserves or deducts funds in a consistent way (so users cannot double-spend).",
+        "Only admins can approve/reject/mark completed for withdrawal requests.",
+        "Users can view their withdrawal request list and statuses (Pending/Approved/Rejected/Completed)."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Make the app localized for Nepali: default UI language Nepali across all screens, with a simple localization structure so text can be maintained consistently.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "It should be in Nepali"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All primary UI labels, navigation, and key screens render in Nepali by default.",
+        "Localization strings are centralized (not hard-coded across many components).",
+        "No English placeholder copy remains in core user flows (login, tournaments list/detail, wallet, top-up, withdraw)."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Create core screens and navigation: (1) Home/Dashboard, (2) Tournaments list + tournament detail/join, (3) Wallet (balance + transactions), (4) Top-up request, (5) Withdraw request + status list, (6) Admin area for verification/results/top-up approvals/withdraw approvals.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "verified tournaments and supports top-up",
+          "withdraw our money",
+          "available through IME Pay and Khalti"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Navigation is accessible on desktop and mobile (responsive layout).",
+        "Non-admin users cannot see or cannot access admin tools in the UI.",
+        "Each screen is wired to backend canister calls via the existing actor hook pattern (without modifying immutable hook files).",
+        "React Query is used for data fetching and cache invalidation after mutations (e.g., after join, approve, finalize)."
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Define a coherent visual theme for the entire UI (colors, typography, spacing, components styling) and apply it consistently across all screens; avoid a blue/purple primary palette.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ]
+      },
+      "acceptanceCriteria": [
+        "App has a consistent design system-like feel (buttons, cards, inputs, tables, badges).",
+        "Theme is applied consistently across tournaments, wallet, and admin views.",
+        "Primary brand color is not blue or purple."
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Add generated static image assets and use them in the UI (e.g., app header/logo and a landing/hero background), served from frontend/public/assets/generated.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Generated images exist under frontend/public/assets/generated with the exact filenames specified in imageRequirements.required.",
+        "Frontend references these assets directly as static files (not via backend).",
+        "Images are visible in the UI (e.g., logo in header, background/hero image on dashboard/login area)."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor in backend/main.mo (no additional backend services).",
+    "Do not edit files under frontend/src/components/ui or other immutablePaths; compose them from outside instead.",
+    "Do not implement real-money payment settlement; model IME Pay/Khalti as withdrawal methods with request/approval tracking unless external API details are explicitly provided later."
+  ],
+  "nonGoals": [
+    "Building the actual game mechanics (e.g., gameplay, matchmaking, real-time multiplayer).",
+    "Direct integration with IME Pay or Khalti APIs without user-provided endpoints/credentials and a confirmed outcall approach.",
+    "KYC/identity verification beyond Internet Identity login and admin verification of tournaments."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Flat emblem-style logo with a trophy and subtle Nepali pattern motif, warm orange/charcoal palette (app-logo.dim_512x512.png)",
+      "Wide hero background illustration showing a competitive tournament vibe with abstract arena lights, warm orange/charcoal palette (hero-bg.dim_1600x900.png)"
+    ],
+    "edits": []
+  }
+}

@@ -1,0 +1,351 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Nepali cash-tournament platform (frontend plan)",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Provide Internet Identity sign-in/out, load caller role, and gate admin-only UI actions.",
+      "acceptanceCriteria": [
+        "Users can sign in/out with Internet Identity from the frontend.",
+        "Backend associates data with the caller principal.",
+        "At least one admin principal can be configured (e.g., via an admin list stored in canister state).",
+        "Admin-only actions (tournament verification, marking top-ups paid, marking withdrawals completed) are rejected for non-admin callers."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Create the app shell that requires login before showing protected application screens, wires navigation/routes, and integrates role-aware UI gating. Use the authorization component’s frontend guidance for Internet Identity login/logout cache clearing and role-based UI decisions; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/LoginButton.tsx",
+          "operation": "create",
+          "description": "Add a reusable login/logout button using the existing Internet Identity hook, clearing React Query cache on logout as recommended by the authorization component; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/ProfileSetupDialog.tsx",
+          "operation": "create",
+          "description": "Add a first-login profile setup dialog (Nepali UI) that calls getCallerUserProfile/saveCallerUserProfile and avoids modal flash using the authorization component’s recommended loading pattern; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useAuth.ts",
+          "operation": "create",
+          "description": "Create React Query hooks for getCallerUserRole(), isCallerAdmin(), getCallerUserProfile(), saveCallerUserProfile(), and provide derived flags (isAuthenticated/isAdmin). Use the existing useActor hook pattern without modifying immutable hook files. Use the authorization component’s guidance for authenticated data loading; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/AdminGuard.tsx",
+          "operation": "create",
+          "description": "Create an admin-only wrapper that renders an access-denied view for non-admins and prevents admin UI tools from being accessible. Use the authorization component’s UI access control guidance; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/AccessDenied.tsx",
+          "operation": "create",
+          "description": "Create a Nepali access denied screen for unauthorized access attempts, with safe error display for authorization failures triggered by backend traps. Use the authorization component’s error handling guidance; verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Build verified tournaments UI: create/verify (admin), join (users), and basic tournament detail flow wired to backend calls.",
+      "acceptanceCriteria": [
+        "Backend supports tournament lifecycle states including at least: Draft/Unverified, Verified/Open, In Progress, Completed.",
+        "Only admins can change a tournament to Verified/Open.",
+        "Only verified/open tournaments can be joined by users.",
+        "Joining a tournament charges an entry fee from the user’s in-app wallet (and fails if insufficient funds).",
+        "Admins can finalize results for a completed tournament and trigger prize distribution to one or more winners.",
+        "All key tournament actions are auditable via stored timestamps/status fields (e.g., createdAt, verifiedAt, completedAt)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/TournamentsPage.tsx",
+          "operation": "create",
+          "description": "Create a Nepali tournaments screen with a simple list UX (client-side saved known Tournament IDs) and actions to view details and join a tournament by ID (calling joinTournament). Use shadcn-ui building blocks (e.g., Card, Button, Input, Badge, Tabs) for consistent UI; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/TournamentDetailPage.tsx",
+          "operation": "create",
+          "description": "Create a Nepali tournament detail screen that supports joining via joinTournament(tournamentId) and shows join outcome, wallet-related errors, and next steps. Use React Query mutations and invalidate balance/transactions after join; use shadcn-ui components for layout and feedback; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/AdminPage.tsx",
+          "operation": "create",
+          "description": "Create a Nepali admin area with an AdminGuard wrapper. Include a tournaments admin section with createTournament(name, entryFee) and verifyTournament(tournamentId). Persist newly created Tournament IDs into a shared client-side store so they appear in the tournaments list. Use shadcn-ui components for forms/tables; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useTournaments.ts",
+          "operation": "create",
+          "description": "Add React Query mutation hooks for createTournament, verifyTournament, joinTournament and a small client-side helper (e.g., localStorage-backed) for storing known Tournament IDs so list/detail navigation works without requiring a backend list function."
+        },
+        {
+          "path": "frontend/src/lib/tournamentStore.ts",
+          "operation": "create",
+          "description": "Implement a lightweight, frontend-only store for known Tournament IDs (add/remove/list, persisted) used by TournamentsPage and AdminPage to provide a usable list and navigation without adding backend browsing capabilities."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the tournaments list and tournament detail screens into the app’s routing/navigation, including deep-link support to tournament detail by ID."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Add wallet UI with balance and transaction history, fetched via backend and displayed in a scrollable list.",
+      "acceptanceCriteria": [
+        "Each user has a wallet balance stored in the backend.",
+        "Backend records a transaction history with at least: type (topup/entry_fee/prize/withdrawal), amount, status, createdAt, and optional reference metadata.",
+        "Frontend shows current balance and a paginated or scrollable transaction list.",
+        "All wallet mutations happen in backend methods; frontend cannot directly change balances."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/WalletPage.tsx",
+          "operation": "create",
+          "description": "Create a Nepali wallet screen showing current balance (getBalance) and a scrollable transaction list (getTransactionHistory) with clear type labels and timestamps. Use shadcn-ui components (Card, Table, Badge, Skeleton) for consistent styling; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useWallet.ts",
+          "operation": "create",
+          "description": "Implement React Query hooks for getBalance and getTransactionHistory, plus shared invalidation helpers to refresh wallet data after join/top-up/withdrawal mutations."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the WalletPage into the navigation/routes so users can reach it from the app shell on mobile and desktop."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Create top-up request UI for users and an admin approval UI that updates wallet views via cache invalidation.",
+      "acceptanceCriteria": [
+        "Frontend provides a form to create a top-up request with amount and optional reference note.",
+        "Backend stores top-up requests with statuses (e.g., Pending, Approved, Rejected).",
+        "Only admins can approve/reject top-up requests.",
+        "Approving a top-up request credits the user’s wallet and creates a corresponding wallet transaction record.",
+        "Users can view the status of their top-up requests."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/TopUpPage.tsx",
+          "operation": "create",
+          "description": "Create a Nepali top-up screen with an amount input and optional reference/note UI (note captured client-side if backend does not support it), submitting createTopUpRequest(amount). Show the user’s top-up history/status list via getTopUpHistory(). Use shadcn-ui Form/Input/Button/Table components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/admin/TopUpRequestsPanel.tsx",
+          "operation": "create",
+          "description": "Add an admin panel section that lists pending top-up requests (getTopUpRequests) and provides an approve action (approveTopUpRequest). Invalidate wallet balance and transaction history queries after approval. Use shadcn-ui table and action components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useTopUps.ts",
+          "operation": "create",
+          "description": "Implement React Query hooks for createTopUpRequest, getTopUpHistory, getTopUpRequests, and approveTopUpRequest, including invalidation of wallet queries after successful approval."
+        },
+        {
+          "path": "frontend/src/pages/AdminPage.tsx",
+          "operation": "modify",
+          "description": "Wire TopUpRequestsPanel into the admin area UI under an admin-only tab/section guarded by AdminGuard."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the TopUpPage into the main navigation/routes."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Create withdrawal request UI (IME Pay/Khalti) with status tracking and admin approval/completion actions.",
+      "acceptanceCriteria": [
+        "Frontend allows creating a withdrawal request with: amount, method (IME Pay or Khalti), and a payout identifier (e.g., phone number or account ID) plus optional note.",
+        "Backend validates that requested amount is <= available withdrawable balance and blocks withdrawals when insufficient funds.",
+        "Creating a withdrawal request reserves or deducts funds in a consistent way (so users cannot double-spend).",
+        "Only admins can approve/reject/mark completed for withdrawal requests.",
+        "Users can view their withdrawal request list and statuses (Pending/Approved/Rejected/Completed)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/WithdrawPage.tsx",
+          "operation": "create",
+          "description": "Create a Nepali withdraw screen with amount, provider selector (IME Pay/Khalti), payout identifier, and payout name fields; submit via requestWithdrawal(amount, provider, identifier, payoutName). Display the user’s withdrawal request list/status using getWithdrawalRequests(). Use shadcn-ui components for forms, select, and list/table UI; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/admin/WithdrawalRequestsPanel.tsx",
+          "operation": "create",
+          "description": "Add an admin panel section listing withdrawal requests (getWithdrawalRequests) with actions to approve (approveWithdrawalRequest) and mark completed (markWithdrawalRequestCompleted). Invalidate wallet balance/transactions and withdrawal list queries after mutations. Use shadcn-ui table and dialogs for confirm steps; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useWithdrawals.ts",
+          "operation": "create",
+          "description": "Implement React Query hooks for requestWithdrawal, getWithdrawalRequests, approveWithdrawalRequest, and markWithdrawalRequestCompleted, including cache invalidation for wallet and withdrawal lists."
+        },
+        {
+          "path": "frontend/src/pages/AdminPage.tsx",
+          "operation": "modify",
+          "description": "Wire WithdrawalRequestsPanel into the admin area UI under an admin-only tab/section guarded by AdminGuard."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the WithdrawPage into the main navigation/routes."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Localize the UI to Nepali by default with centralized strings used across core flows.",
+      "acceptanceCriteria": [
+        "All primary UI labels, navigation, and key screens render in Nepali by default.",
+        "Localization strings are centralized (not hard-coded across many components).",
+        "No English placeholder copy remains in core user flows (login, tournaments list/detail, wallet, top-up, withdraw)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/i18n/np.ts",
+          "operation": "create",
+          "description": "Create a centralized Nepali strings dictionary covering navigation, auth/profile setup, tournaments, wallet, top-up, withdraw, and admin labels/messages."
+        },
+        {
+          "path": "frontend/src/i18n/index.ts",
+          "operation": "create",
+          "description": "Add a minimal i18n utility (e.g., t(key) + types/keys) that defaults to Nepali and can be imported consistently across screens/components."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Ensure app shell navigation and common UI text use centralized Nepali strings via the i18n utility."
+        },
+        {
+          "path": "frontend/src/pages/WalletPage.tsx",
+          "operation": "modify",
+          "description": "Replace any hard-coded UI text with centralized Nepali strings via the i18n utility."
+        },
+        {
+          "path": "frontend/src/pages/TopUpPage.tsx",
+          "operation": "modify",
+          "description": "Replace any hard-coded UI text with centralized Nepali strings via the i18n utility."
+        },
+        {
+          "path": "frontend/src/pages/WithdrawPage.tsx",
+          "operation": "modify",
+          "description": "Replace any hard-coded UI text with centralized Nepali strings via the i18n utility."
+        },
+        {
+          "path": "frontend/src/pages/TournamentsPage.tsx",
+          "operation": "modify",
+          "description": "Replace any hard-coded UI text with centralized Nepali strings via the i18n utility."
+        },
+        {
+          "path": "frontend/src/pages/TournamentDetailPage.tsx",
+          "operation": "modify",
+          "description": "Replace any hard-coded UI text with centralized Nepali strings via the i18n utility."
+        },
+        {
+          "path": "frontend/src/pages/AdminPage.tsx",
+          "operation": "modify",
+          "description": "Replace any hard-coded UI text with centralized Nepali strings via the i18n utility (including admin panels)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Implement the required core screens and responsive navigation, wired to backend calls via actor hooks and React Query.",
+      "acceptanceCriteria": [
+        "Navigation is accessible on desktop and mobile (responsive layout).",
+        "Non-admin users cannot see or cannot access admin tools in the UI.",
+        "Each screen is wired to backend canister calls via the existing actor hook pattern (without modifying immutable hook files).",
+        "React Query is used for data fetching and cache invalidation after mutations (e.g., after join, approve, finalize)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/DashboardPage.tsx",
+          "operation": "create",
+          "description": "Create a Nepali home/dashboard screen showing key actions (tournaments, wallet, top-up, withdraw) and highlighting the current balance. Display the generated hero background image in the dashboard header area. Use shadcn-ui components for cards and actions; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/layout/AppLayout.tsx",
+          "operation": "create",
+          "description": "Create a responsive layout with header + navigation (mobile-friendly) and a main content area. Include LoginButton, user name from profile, and admin badge where applicable. Use shadcn-ui components for navigation and layout primitives; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/layout/AppNav.tsx",
+          "operation": "create",
+          "description": "Implement a responsive Nepali navigation component (desktop sidebar/top nav + mobile menu) that hides admin links for non-admin users. Use shadcn-ui navigation/menu components where appropriate; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire all required screens into the app: (1) DashboardPage, (2) TournamentsPage + TournamentDetailPage, (3) WalletPage, (4) TopUpPage, (5) WithdrawPage, (6) AdminPage. Ensure AdminPage is wrapped by AdminGuard and non-admins cannot reach it via UI navigation."
+        },
+        {
+          "path": "frontend/src/hooks/queryKeys.ts",
+          "operation": "create",
+          "description": "Define shared React Query keys for wallet, top-ups, withdrawals, auth/profile, and tournaments to standardize caching and invalidation across screens."
+        },
+        {
+          "path": "frontend/src/utils/errorMapping.ts",
+          "operation": "create",
+          "description": "Add a centralized mapping from backend trap/error messages to user-friendly Nepali error messages for common flows (unauthorized, insufficient balance, invalid input), used across mutations and guards."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Apply a cohesive warm orange/charcoal visual theme across the app (no blue/purple primary).",
+      "acceptanceCriteria": [
+        "App has a consistent design system-like feel (buttons, cards, inputs, tables, badges).",
+        "Theme is applied consistently across tournaments, wallet, and admin views.",
+        "Primary brand color is not blue or purple."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Create global styles and set CSS variables used by Tailwind/shadcn-ui theme tokens to a warm orange/charcoal palette (primary not blue/purple). Ensure typography and spacing defaults support consistent UI across screens."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Adjust Tailwind theme configuration as needed to align with the warm orange/charcoal palette and consistent radii/shadows, while keeping existing token-based color mapping."
+        },
+        {
+          "path": "frontend/src/components/layout/AppLayout.tsx",
+          "operation": "modify",
+          "description": "Ensure layout-level components consistently apply theme styles (backgrounds, surfaces/cards, header styling) using the configured token colors and shadcn-ui components; verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "Add required generated static images and reference them in the UI as public assets.",
+      "acceptanceCriteria": [
+        "Generated images exist under frontend/public/assets/generated with the exact filenames specified in imageRequirements.required.",
+        "Frontend references these assets directly as static files (not via backend).",
+        "Images are visible in the UI (e.g., logo in header, background/hero image on dashboard/login area)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/app-logo.dim_512x512.png",
+          "operation": "create",
+          "description": "Add the generated image asset at the exact path frontend/public/assets/generated/app-logo.dim_512x512.png for use as the app logo."
+        },
+        {
+          "path": "frontend/public/assets/generated/hero-bg.dim_1600x900.png",
+          "operation": "create",
+          "description": "Add the generated image asset at the exact path frontend/public/assets/generated/hero-bg.dim_1600x900.png for use as a dashboard/hero background."
+        },
+        {
+          "path": "frontend/src/components/layout/AppLayout.tsx",
+          "operation": "modify",
+          "description": "Reference frontend/public/assets/generated/app-logo.dim_512x512.png in the header as the visible app logo (static public asset reference; no backend)."
+        },
+        {
+          "path": "frontend/src/pages/DashboardPage.tsx",
+          "operation": "modify",
+          "description": "Reference frontend/public/assets/generated/hero-bg.dim_1600x900.png as a visible hero/background element on the dashboard (static public asset reference; no backend)."
+        }
+      ]
+    }
+  ]
+}

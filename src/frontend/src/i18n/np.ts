@@ -1,0 +1,142 @@
+export const np = {
+  // Common
+  loading: 'लोड हुँदैछ...',
+  error: 'त्रुटि',
+  success: 'सफल',
+  cancel: 'रद्द गर्नुहोस्',
+  confirm: 'पुष्टि गर्नुहोस्',
+  save: 'सुरक्षित गर्नुहोस्',
+  submit: 'पेश गर्नुहोस्',
+  close: 'बन्द गर्नुहोस्',
+  
+  // Auth
+  welcome: 'स्वागत छ',
+  login: 'लगइन गर्नुहोस्',
+  logout: 'लगआउट गर्नुहोस्',
+  loggingIn: 'लगइन हुँदैछ...',
+  
+  // Profile Setup
+  profileSetup: 'प्रोफाइल सेटअप',
+  enterYourName: 'तपाईंको नाम प्रविष्ट गर्नुहोस्',
+  name: 'नाम',
+  namePlaceholder: 'तपाईंको नाम',
+  
+  // Navigation
+  dashboard: 'ड्यासबोर्ड',
+  tournaments: 'प्रतियोगिताहरू',
+  wallet: 'वालेट',
+  topUp: 'टप अप',
+  withdraw: 'निकासी',
+  admin: 'प्रशासक',
+  
+  // Dashboard
+  yourBalance: 'तपाईंको ब्यालेन्स',
+  quickActions: 'द्रुत कार्यहरू',
+  viewTournaments: 'प्रतियोगिताहरू हेर्नुहोस्',
+  viewWallet: 'वालेट हेर्नुहोस्',
+  addFunds: 'रकम थप्नुहोस्',
+  withdrawFunds: 'रकम निकाल्नुहोस्',
+  
+  // Tournaments
+  allTournaments: 'सबै प्रतियोगिताहरू',
+  tournamentDetails: 'प्रतियोगिता विवरण',
+  entryFee: 'प्रवेश शुल्क',
+  status: 'स्थिति',
+  verified: 'प्रमाणित',
+  unverified: 'अप्रमाणित',
+  open: 'खुला',
+  ongoing: 'चलिरहेको',
+  finished: 'समाप्त',
+  participants: 'सहभागीहरू',
+  winner: 'विजेता',
+  joinTournament: 'प्रतियोगितामा सामेल हुनुहोस्',
+  joining: 'सामेल हुँदै...',
+  tournamentJoined: 'प्रतियोगितामा सफलतापूर्वक सामेल हुनुभयो!',
+  noTournaments: 'कुनै प्रतियोगिता उपलब्ध छैन',
+  addTournamentId: 'प्रतियोगिता ID थप्नुहोस्',
+  tournamentId: 'प्रतियोगिता ID',
+  addTournament: 'थप्नुहोस्',
+  
+  // Wallet
+  balance: 'ब्यालेन्स',
+  transactionHistory: 'लेनदेन इतिहास',
+  type: 'प्रकार',
+  amount: 'रकम',
+  date: 'मिति',
+  noTransactions: 'कुनै लेनदेन छैन',
+  deposit: 'जम्मा',
+  withdrawal: 'निकासी',
+  prize: 'पुरस्कार',
+  topUpTransaction: 'टप अप',
+  withdrawalRequest: 'निकासी अनुरोध',
+  
+  // Top Up
+  topUpRequest: 'टप अप अनुरोध',
+  requestTopUp: 'टप अप अनुरोध गर्नुहोस्',
+  topUpAmount: 'टप अप रकम',
+  amountPlaceholder: 'रकम प्रविष्ट गर्नुहोस्',
+  requesting: 'अनुरोध गर्दै...',
+  topUpRequested: 'टप अप अनुरोध सफलतापूर्वक पेश गरियो!',
+  topUpHistory: 'टप अप इतिहास',
+  pending: 'पेन्डिङ',
+  completed: 'पूरा भयो',
+  noTopUpRequests: 'कुनै टप अप अनुरोध छैन',
+  
+  // Withdraw
+  withdrawRequest: 'निकासी अनुरोध',
+  requestWithdrawal: 'निकासी अनुरोध गर्नुहोस्',
+  withdrawAmount: 'निकासी रकम',
+  paymentProvider: 'भुक्तानी प्रदायक',
+  selectProvider: 'प्रदायक चयन गर्नुहोस्',
+  imePay: 'IME Pay',
+  khalti: 'Khalti',
+  payoutIdentifier: 'भुक्तानी पहिचानकर्ता',
+  phoneOrAccount: 'फोन नम्बर वा खाता ID',
+  payoutName: 'भुक्तानी नाम',
+  accountHolderName: 'खाता धारकको नाम',
+  withdrawalRequested: 'निकासी अनुरोध सफलतापूर्वक पेश गरियो!',
+  withdrawalHistory: 'निकासी इतिहास',
+  approved: 'स्वीकृत',
+  rejected: 'अस्वीकृत',
+  noWithdrawalRequests: 'कुनै निकासी अनुरोध छैन',
+  
+  // Admin
+  adminPanel: 'प्रशासक प्यानल',
+  createTournament: 'प्रतियोगिता सिर्जना गर्नुहोस्',
+  tournamentName: 'प्रतियोगिता नाम',
+  tournamentNamePlaceholder: 'प्रतियोगिता नाम प्रविष्ट गर्नुहोस्',
+  creating: 'सिर्जना गर्दै...',
+  tournamentCreated: 'प्रतियोगिता सफलतापूर्वक सिर्जना गरियो!',
+  verifyTournament: 'प्रतियोगिता प्रमाणित गर्नुहोस्',
+  verifyTournamentId: 'प्रमाणित गर्न प्रतियोगिता ID',
+  verify: 'प्रमाणित गर्नुहोस्',
+  verifying: 'प्रमाणित गर्दै...',
+  tournamentVerified: 'प्रतियोगिता सफलतापूर्वक प्रमाणित गरियो!',
+  topUpRequests: 'टप अप अनुरोधहरू',
+  user: 'प्रयोगकर्ता',
+  actions: 'कार्यहरू',
+  approve: 'स्वीकृत गर्नुहोस्',
+  approving: 'स्वीकृत गर्दै...',
+  topUpApproved: 'टप अप सफलतापूर्वक स्वीकृत गरियो!',
+  withdrawalRequests: 'निकासी अनुरोधहरू',
+  markCompleted: 'पूरा भएको चिन्ह लगाउनुहोस्',
+  markingCompleted: 'चिन्ह लगाउँदै...',
+  withdrawalCompleted: 'निकासी सफलतापूर्वक पूरा भयो!',
+  withdrawalApproved: 'निकासी सफलतापूर्वक स्वीकृत गरियो!',
+  noRequests: 'कुनै अनुरोध छैन',
+  
+  // Access Denied
+  accessDenied: 'पहुँच अस्वीकृत',
+  adminOnly: 'यो पृष्ठ प्रशासकहरूको लागि मात्र हो।',
+  backToDashboard: 'ड्यासबोर्डमा फर्कनुहोस्',
+  
+  // Errors
+  insufficientFunds: 'अपर्याप्त रकम',
+  tournamentNotVerified: 'प्रतियोगिता प्रमाणित छैन',
+  unauthorized: 'अनधिकृत',
+  errorOccurred: 'त्रुटि भयो',
+  
+  // Footer
+  builtWith: 'प्रेम र',
+  using: 'प्रयोग गरेर निर्माण गरिएको',
+};
