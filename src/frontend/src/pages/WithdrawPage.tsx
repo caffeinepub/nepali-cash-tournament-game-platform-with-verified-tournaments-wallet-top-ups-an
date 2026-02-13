@@ -69,19 +69,19 @@ export default function WithdrawPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold mb-2">{t('withdraw')}</h1>
+        <h1 className="text-3xl font-bold mb-2 tracking-tight">{t('withdraw')}</h1>
         <p className="text-muted-foreground">तपाईंको वालेटबाट रकम निकाल्नुहोस्</p>
       </div>
 
       {/* Withdrawal Request Form */}
-      <Card>
+      <Card className="border-2 shadow-lg">
         <CardHeader>
-          <div className="flex items-center gap-3">
-            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-              <ArrowDownCircle className="h-6 w-6 text-primary" />
+          <div className="flex items-center gap-4">
+            <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+              <ArrowDownCircle className="h-7 w-7 text-primary" />
             </div>
             <div>
-              <CardTitle>{t('requestWithdrawal')}</CardTitle>
+              <CardTitle className="text-xl">{t('requestWithdrawal')}</CardTitle>
               <CardDescription>नयाँ निकासी अनुरोध सिर्जना गर्नुहोस्</CardDescription>
             </div>
           </div>
@@ -89,7 +89,7 @@ export default function WithdrawPage() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="amount">{t('withdrawAmount')}</Label>
+              <Label htmlFor="amount" className="text-base font-medium">{t('withdrawAmount')}</Label>
               <Input
                 id="amount"
                 type="number"
@@ -98,13 +98,14 @@ export default function WithdrawPage() {
                 placeholder={t('amountPlaceholder')}
                 min="1"
                 required
+                className="h-11"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="provider">{t('paymentProvider')}</Label>
+              <Label htmlFor="provider" className="text-base font-medium">{t('paymentProvider')}</Label>
               <Select value={provider} onValueChange={(v) => setProvider(v as 'imePay' | 'khalti')}>
-                <SelectTrigger id="provider">
+                <SelectTrigger id="provider" className="h-11">
                   <SelectValue placeholder={t('selectProvider')} />
                 </SelectTrigger>
                 <SelectContent>
@@ -115,28 +116,30 @@ export default function WithdrawPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="identifier">{t('payoutIdentifier')}</Label>
+              <Label htmlFor="identifier" className="text-base font-medium">{t('payoutIdentifier')}</Label>
               <Input
                 id="identifier"
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
                 placeholder={t('phoneOrAccount')}
                 required
+                className="h-11"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="payoutName">{t('payoutName')}</Label>
+              <Label htmlFor="payoutName" className="text-base font-medium">{t('payoutName')}</Label>
               <Input
                 id="payoutName"
                 value={payoutName}
                 onChange={(e) => setPayoutName(e.target.value)}
                 placeholder={t('accountHolderName')}
                 required
+                className="h-11"
               />
             </div>
 
-            <Button type="submit" disabled={requestWithdrawal.isPending} className="w-full">
+            <Button type="submit" disabled={requestWithdrawal.isPending} className="w-full h-11">
               {requestWithdrawal.isPending ? t('requesting') : t('submit')}
             </Button>
           </form>
@@ -144,9 +147,9 @@ export default function WithdrawPage() {
       </Card>
 
       {/* Withdrawal History */}
-      <Card>
+      <Card className="border-2">
         <CardHeader>
-          <CardTitle>{t('withdrawalHistory')}</CardTitle>
+          <CardTitle className="text-xl">{t('withdrawalHistory')}</CardTitle>
           <CardDescription>तपाईंको निकासी अनुरोधहरू</CardDescription>
         </CardHeader>
         <CardContent>
@@ -156,20 +159,20 @@ export default function WithdrawPage() {
               <Skeleton className="h-12 w-full" />
             </div>
           ) : requests && requests.length > 0 ? (
-            <div className="rounded-md border overflow-x-auto">
+            <div className="rounded-xl border-2 overflow-hidden">
               <Table>
                 <TableHeader>
-                  <TableRow>
-                    <TableHead>{t('amount')}</TableHead>
-                    <TableHead>{t('paymentProvider')}</TableHead>
-                    <TableHead>{t('status')}</TableHead>
-                    <TableHead>{t('date')}</TableHead>
+                  <TableRow className="bg-muted/50">
+                    <TableHead className="font-semibold">{t('amount')}</TableHead>
+                    <TableHead className="font-semibold">{t('paymentProvider')}</TableHead>
+                    <TableHead className="font-semibold">{t('status')}</TableHead>
+                    <TableHead className="font-semibold">{t('date')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {requests.map((req) => (
-                    <TableRow key={req.id.toString()}>
-                      <TableCell className="font-medium">रू {req.amount.amount.toString()}</TableCell>
+                    <TableRow key={req.id.toString()} className="hover:bg-muted/30">
+                      <TableCell className="font-semibold">रू {req.amount.amount.toString()}</TableCell>
                       <TableCell>
                         <Badge variant="outline">{req.paymentProvider === 'imePay' ? t('imePay') : t('khalti')}</Badge>
                       </TableCell>
@@ -185,7 +188,7 @@ export default function WithdrawPage() {
               </Table>
             </div>
           ) : (
-            <p className="text-center text-muted-foreground py-8">{t('noWithdrawalRequests')}</p>
+            <p className="text-center text-muted-foreground py-12 font-medium">{t('noWithdrawalRequests')}</p>
           )}
         </CardContent>
       </Card>

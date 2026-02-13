@@ -26,14 +26,14 @@ export default function VerifyTournamentPanel() {
   };
 
   return (
-    <Card>
+    <Card className="border-2">
       <CardHeader>
-        <div className="flex items-center gap-3">
-          <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-            <CheckCircle className="h-6 w-6 text-primary" />
+        <div className="flex items-center gap-4">
+          <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+            <CheckCircle className="h-7 w-7 text-primary" />
           </div>
           <div>
-            <CardTitle>{t('verifyTournament')}</CardTitle>
+            <CardTitle className="text-xl">{t('verifyTournament')}</CardTitle>
             <CardDescription>प्रतियोगिता प्रमाणित गर्नुहोस्</CardDescription>
           </div>
         </div>
@@ -41,17 +41,18 @@ export default function VerifyTournamentPanel() {
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="tournamentId">{t('verifyTournamentId')}</Label>
+            <Label htmlFor="tournamentId" className="text-base font-medium">{t('verifyTournamentId')}</Label>
             <Input
               id="tournamentId"
               value={tournamentId}
               onChange={(e) => setTournamentId(e.target.value)}
               placeholder={t('tournamentId')}
               required
+              className="h-11"
             />
           </div>
 
-          <Button type="submit" disabled={verifyTournament.isPending} className="w-full">
+          <Button type="submit" disabled={verifyTournament.isPending} className="w-full h-11">
             {verifyTournament.isPending ? t('verifying') : t('verify')}
           </Button>
         </form>

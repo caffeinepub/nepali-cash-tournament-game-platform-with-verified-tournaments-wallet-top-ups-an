@@ -24,19 +24,19 @@ export default function WalletPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold mb-2">{t('wallet')}</h1>
+        <h1 className="text-3xl font-bold mb-2 tracking-tight">{t('wallet')}</h1>
         <p className="text-muted-foreground">तपाईंको ब्यालेन्स र लेनदेन इतिहास</p>
       </div>
 
       {/* Balance Card */}
-      <Card>
+      <Card className="border-2 shadow-lg">
         <CardHeader>
-          <div className="flex items-center gap-3">
-            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-              <WalletIcon className="h-6 w-6 text-primary" />
+          <div className="flex items-center gap-4">
+            <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+              <WalletIcon className="h-7 w-7 text-primary" />
             </div>
             <div>
-              <CardTitle>{t('balance')}</CardTitle>
+              <CardTitle className="text-xl">{t('balance')}</CardTitle>
               <CardDescription>तपाईंको हालको ब्यालेन्स</CardDescription>
             </div>
           </div>
@@ -45,15 +45,15 @@ export default function WalletPage() {
           {balanceLoading ? (
             <Skeleton className="h-12 w-48" />
           ) : (
-            <p className="text-4xl font-bold">रू {balance?.amount.toString() || '0'}</p>
+            <p className="text-4xl font-bold text-primary">रू {balance?.amount.toString() || '0'}</p>
           )}
         </CardContent>
       </Card>
 
       {/* Transaction History */}
-      <Card>
+      <Card className="border-2">
         <CardHeader>
-          <CardTitle>{t('transactionHistory')}</CardTitle>
+          <CardTitle className="text-xl">{t('transactionHistory')}</CardTitle>
           <CardDescription>तपाईंको सबै लेनदेनहरू</CardDescription>
         </CardHeader>
         <CardContent>
@@ -64,22 +64,22 @@ export default function WalletPage() {
               <Skeleton className="h-12 w-full" />
             </div>
           ) : transactions && transactions.length > 0 ? (
-            <div className="rounded-md border">
+            <div className="rounded-xl border-2 overflow-hidden">
               <Table>
                 <TableHeader>
-                  <TableRow>
-                    <TableHead>{t('type')}</TableHead>
-                    <TableHead>{t('amount')}</TableHead>
-                    <TableHead>{t('date')}</TableHead>
+                  <TableRow className="bg-muted/50">
+                    <TableHead className="font-semibold">{t('type')}</TableHead>
+                    <TableHead className="font-semibold">{t('amount')}</TableHead>
+                    <TableHead className="font-semibold">{t('date')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {transactions.map((tx) => (
-                    <TableRow key={tx.id.toString()}>
+                    <TableRow key={tx.id.toString()} className="hover:bg-muted/30">
                       <TableCell>
                         <Badge variant="outline">{getTransactionTypeLabel(tx.transactionType)}</Badge>
                       </TableCell>
-                      <TableCell className="font-medium">रू {tx.amount.amount.toString()}</TableCell>
+                      <TableCell className="font-semibold">रू {tx.amount.amount.toString()}</TableCell>
                       <TableCell className="text-muted-foreground">
                         {new Date(Number(tx.createdAt) / 1000000).toLocaleDateString('ne-NP')}
                       </TableCell>
@@ -89,7 +89,7 @@ export default function WalletPage() {
               </Table>
             </div>
           ) : (
-            <p className="text-center text-muted-foreground py-8">{t('noTransactions')}</p>
+            <p className="text-center text-muted-foreground py-12 font-medium">{t('noTransactions')}</p>
           )}
         </CardContent>
       </Card>

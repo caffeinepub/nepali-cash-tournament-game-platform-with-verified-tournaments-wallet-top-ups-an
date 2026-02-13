@@ -1,77 +1,190 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 4,
-  "summary": "Game platform in Nepali featuring verified cash tournaments with wallet top-up and prize withdrawals via IME Pay and Khalti.",
+  "projectStateVersion": 3,
+  "summary": "An ICP (Internet Computer) dapp for Nepali-language cash tournaments: users authenticate with Internet Identity, set up a simple profile, maintain an in-app wallet, join admin-verified tournaments using wallet credits, request top-ups and withdrawals, and admins manage tournament creation/verification plus approval workflows for top-ups and withdrawals.",
   "existing_features": [
     {
-      "id": "feature-add-internet-identity-authentication-and-a-basic-role-model-regular-user-vs-admin-so-admins-can-verify-tournaments-and-approve-top-ups-withdrawals",
-      "title": "Add Internet Identity authentication and a basic role model (regular user vs admin) so admins can verify tournaments and approve top-ups/withdrawals.",
+      "id": "IF-1",
+      "title": "Internet Identity authentication and login gating",
+      "synonyms": [
+        "II auth",
+        "Dfinity AuthClient login"
+      ],
+      "description": "Provides an Internet Identity context/provider that restores identities from storage, supports login/logout, and gates the app behind a dedicated login screen when unauthenticated.",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-implement-a-verified-tournaments-system-create-tournaments-mark-tournaments-as-verified-admin-only-allow-users-to-join-verified-tournaments-record-results-and-distribute-prizes-to-winners-in-app-wallets",
-      "title": "Implement a verified tournaments system: create tournaments, mark tournaments as verified (admin-only), allow users to join verified tournaments, record results, and distribute prizes to winners’ in-app wallets.",
+      "id": "IF-2",
+      "title": "Backend actor creation per identity with access-control initialization via secret token",
+      "synonyms": [
+        "useActor",
+        "actor bootstrap"
+      ],
+      "description": "Creates a backend canister actor using the current Internet Identity (or anonymous actor if logged out), reads an admin bootstrap token from URL hash/session, calls _initializeAccessControlWithSecret on the backend, and invalidates/refetches dependent React Query caches when the actor changes.",
       "reqIds": [
-        "REQ-2"
+        "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-add-an-in-app-wallet-with-transaction-history-to-support-tournament-entry-fees-winnings-credits-and-admin-approved-top-ups",
-      "title": "Add an in-app wallet with transaction history to support tournament entry fees, winnings credits, and admin-approved top-ups.",
+      "id": "IF-3",
+      "title": "Role-based access control (admin/user/guest) with admin-only route guarding",
+      "synonyms": [
+        "RBAC",
+        "AdminGuard"
+      ],
+      "description": "Implements backend roles (admin/user/guest) and permission checks around protected methods; frontend includes AdminGuard and AccessDenied to restrict access to the admin area and conditionally shows admin navigation links.",
       "reqIds": [
-        "REQ-3"
+        "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-implement-wallet-top-up-requests-users-can-create-a-top-up-request-admins-can-approve-mark-it-as-paid-wallet-balance-updates-only-on-admin-approval",
-      "title": "Implement wallet top-up requests: users can create a top-up request; admins can approve/mark it as paid; wallet balance updates only on admin approval.",
+      "id": "IF-4",
+      "title": "User profile setup and display",
+      "synonyms": [
+        "ProfileSetupDialog",
+        "display name"
+      ],
+      "description": "Prompts first-time authenticated users to save a profile name and displays the saved name in the application header; includes hooks to fetch/save the caller profile.",
       "reqIds": [
-        "REQ-4"
+        "REQ-1"
       ],
       "version": 1
     },
     {
-      "id": "feature-implement-tournament-winnings-withdrawal-requests-users-can-request-withdrawal-of-available-wallet-funds-select-ime-pay-or-khalti-provide-payout-identifier-details-and-track-status-admins-can-approve-reject-mark-completed",
-      "title": "Implement tournament winnings withdrawal requests: users can request withdrawal of available wallet funds, select IME Pay or Khalti, provide payout identifier details, and track status; admins can approve/reject/mark completed.",
-      "reqIds": [
-        "REQ-5"
+      "id": "IF-5",
+      "title": "Core screens, routing, and responsive navigation",
+      "synonyms": [
+        "TanStack Router pages",
+        "AppLayout/AppNav"
       ],
-      "version": 1
-    },
-    {
-      "id": "feature-make-the-app-localized-for-nepali-default-ui-language-nepali-across-all-screens-with-a-simple-localization-structure-so-text-can-be-maintained-consistently",
-      "title": "Make the app localized for Nepali: default UI language Nepali across all screens, with a simple localization structure so text can be maintained consistently.",
-      "reqIds": [
-        "REQ-6"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-create-core-screens-and-navigation-1-home-dashboard-2-tournaments-list-tournament-detail-join-3-wallet-balance-transactions-4-top-up-request-5-withdraw-request-status-list-6-admin-area-for-verification-results-top-up-approvals-withdraw-approvals",
-      "title": "Create core screens and navigation: (1) Home/Dashboard, (2) Tournaments list + tournament detail/join, (3) Wallet (balance + transactions), (4) Top-up request, (5) Withdraw request + status list, (6) Admin area for verification/results/top-up approvals/withdraw approvals.",
+      "description": "Defines main routes (Dashboard, Tournaments, Tournament Detail, Wallet, Top-up, Withdraw, Admin) with a responsive navigation UI (desktop sidebar + mobile sheet menu) wrapped in a consistent layout with header/footer.",
       "reqIds": [
         "REQ-7"
       ],
       "version": 1
     },
     {
-      "id": "feature-define-a-coherent-visual-theme-for-the-entire-ui-colors-typography-spacing-components-styling-and-apply-it-consistently-across-all-screens-avoid-a-blue-purple-primary-palette",
-      "title": "Define a coherent visual theme for the entire UI (colors, typography, spacing, components styling) and apply it consistently across all screens; avoid a blue/purple primary palette.",
+      "id": "IF-6",
+      "title": "Nepali localization framework and translated UI copy",
+      "synonyms": [
+        "i18n",
+        "Nepali strings"
+      ],
+      "description": "Provides a simple translation helper (t) and a centralized Nepali dictionary used across navigation, pages, forms, admin panels, and common messages.",
       "reqIds": [
-        "REQ-8"
+        "REQ-6"
       ],
       "version": 1
     },
     {
-      "id": "feature-add-generated-static-image-assets-and-use-them-in-the-ui-e-g-app-header-logo-and-a-landing-hero-background-served-from-frontend-public-assets-generated",
-      "title": "Add generated static image assets and use them in the UI (e.g., app header/logo and a landing/hero background), served from frontend/public/assets/generated.",
+      "id": "IF-7",
+      "title": "Verified tournaments workflow (create, verify, join with entry fee deduction)",
+      "synonyms": [
+        "tournaments",
+        "verified-only join"
+      ],
+      "description": "Admins can create tournaments and mark them as verified; users can join verified open tournaments and the entry fee is deducted from the user’s wallet balance.",
       "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "IF-8",
+      "title": "Client-side tournament ID tracking and browsing",
+      "synonyms": [
+        "tournamentStore",
+        "localStorage tournament list"
+      ],
+      "description": "Stores a list of known tournament IDs in localStorage, allows users/admins to add IDs, and navigates to a tournament detail page for joining.",
+      "reqIds": [
+        "REQ-2",
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "IF-9",
+      "title": "In-app wallet balance and transaction history UI (read-only endpoints)",
+      "synonyms": [
+        "wallet page",
+        "getBalance/getTransactionHistory"
+      ],
+      "description": "Fetches and displays the caller’s wallet balance and transaction history with localized labels and Nepali-formatted dates.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "IF-10",
+      "title": "Top-up request submission and admin approval workflow",
+      "synonyms": [
+        "top-up requests",
+        "approveTopUpRequest"
+      ],
+      "description": "Users can create top-up requests; admins can view all requests and approve them, which updates the user wallet balance; frontend includes both user-facing top-up form/history UI and an admin review/approve panel.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "IF-11",
+      "title": "Withdrawal request submission with provider details and admin processing",
+      "synonyms": [
+        "withdrawals",
+        "IME Pay/Khalti withdrawals"
+      ],
+      "description": "Users can request withdrawals with amount, provider (IME Pay or Khalti), and payout details; admins can list requests, approve them, and mark them completed; includes user and admin UIs with status badges.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "IF-12",
+      "title": "Consistent theming and generated static assets integration",
+      "synonyms": [
+        "Tailwind OKLCH theme",
+        "logo/hero assets"
+      ],
+      "description": "Applies a warm orange/charcoal theme via Tailwind + CSS variables with light/dark support, and uses generated static assets (app logo and dashboard hero background) throughout the UI.",
+      "reqIds": [
+        "REQ-8",
         "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "IF-13",
+      "title": "User feedback and error handling UX",
+      "synonyms": [
+        "toasts",
+        "error mapping"
+      ],
+      "description": "Uses Sonner toasts for mutation feedback, Skeletons for loading states, and maps common backend error strings to user-friendly Nepali messages in key flows (e.g., joining tournaments).",
+      "reqIds": [],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-app-branding-text-so-the-app-displays-the-new-brand-name-nepal-top-up-center-consistently-across-the-ui-header-logo-area-and-the-browser-tab-title-metadata",
+      "title": "Update the app branding text so the app displays the new brand name \"Nepal Top Up Center\" consistently across the UI (header/logo area) and the browser tab title/metadata.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-coherent-new-visual-theme-for-the-nepal-top-up-center-brand-by-adjusting-tailwind-css-theme-tokens-colors-typography-surface-background-buttons-cards-and-applying-them-consistently-across-existing-pages-dashboard-tournaments-wallet-top-up-withdraw-admin-use-english-for-any-new-user-facing-text",
+      "title": "Implement a coherent new visual theme for the \"Nepal Top Up Center\" brand by adjusting Tailwind/CSS theme tokens (colors, typography, surface/background, buttons, cards) and applying them consistently across existing pages (Dashboard, Tournaments, Wallet, Top Up, Withdraw, Admin). Use English for any new user-facing text.",
+      "reqIds": [
+        "REQ-11"
       ],
       "version": 1
     }
@@ -79,59 +192,46 @@
   "new_feature_requests": [
     {
       "id": "AR-1",
-      "summary": "Verified tournaments system (tournament creation/verification, participation, results, prize distribution)",
+      "summary": "Add Free Fire support: store Free Fire UID and IGN in user profile and tag tournaments as Free Fire (optionally include rules/room ID/password fields)",
       "reqIds": [],
       "status": "pending"
     },
     {
       "id": "AR-2",
-      "summary": "Wallet top-up support (add funds to participate in tournaments)",
+      "summary": "Extend withdrawal options to include eSewa in addition to IME Pay and Khalti (manual admin processing flow)",
       "reqIds": [],
       "status": "pending"
     },
     {
       "id": "AR-3",
-      "summary": "Withdraw winnings from tournaments",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-4",
-      "summary": "Integrate IME Pay for withdrawals",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-5",
-      "summary": "Integrate Khalti for withdrawals",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-6",
-      "summary": "Nepali language localization (UI/content in Nepali)",
+      "summary": "Allow editing app branding/design: change app name and UI theme/design elements (colors, logo/icon, layout/text)",
       "reqIds": [],
       "status": "pending"
     }
   ],
-  "architectural_notes": [],
-  "known_issues": [],
+  "architectural_notes": [
+    "Frontend is a React SPA using TanStack Router for routing and @tanstack/react-query for data fetching/mutations and cache invalidation.",
+    "UI is built with shadcn-ui components on Tailwind CSS, using CSS-variable (OKLCH) design tokens and next-themes for light/dark mode.",
+    "Backend is a Motoko canister (actor) with in-memory state using mo:core Map/Set collections for profiles, tournaments, wallet balances, and request records.",
+    "Role-based authorization is implemented via an AccessControl module and a mixin (MixinAuthorization) that exposes role APIs and initialization.",
+    "Frontend creates an authenticated backend actor per Internet Identity principal (useActor), calls backend initialization on actor creation, and invalidates/refetches other queries when the actor changes.",
+    "Admin bootstrap token is read as a secret from URL hash and persisted in sessionStorage, then passed to backend initialization to assign the first admin (token must match CAFFEINE_ADMIN_TOKEN env var).",
+    "Localization is implemented via a simple dictionary-based i18n module (t() mapping keys to Nepali strings)."
+  ],
+  "known_issues": [
+    "Backend uses caller Principal as IDs for tournaments, top-up requests, and withdrawal requests (id = caller), which effectively limits each principal to a single tournament/request and causes overwrites instead of creating multiple records.",
+    "No backend API exists to list tournaments or fetch tournament details by ID; the frontend relies on localStorage-managed tournament IDs and the detail page only displays the ID (cannot show name/status/verified/participants from backend).",
+    "Wallet transaction history is not recorded: walletTransactions state is never appended to for joins, top-ups, withdrawals, or prizes, so getTransactionHistory will usually return an empty array despite UI support for it.",
+    "Authorization mismatch in top-ups: backend getTopUpHistory is admin-only, but the user TopUpPage calls it; non-admin users will hit Unauthorized traps and may see misleading empty-history UI.",
+    "Authorization mismatch in withdrawals: backend getWithdrawalRequests is admin-only, but the user WithdrawPage calls it to render “history”; non-admin users will hit Unauthorized traps and may see misleading empty-history UI.",
+    "Withdrawals do not reserve or deduct wallet balance and lack duplicate-request prevention/rejection flows, despite related error types being declared (WalletError is largely unused).",
+    "Top-up request model contains transaction/provider/payout fields but createTopUpRequest sets placeholders (empty transactionId/payoutIdentifier, fixed provider) and the user UI does not collect these details.",
+    "Backend authorization initialization traps if CAFFEINE_ADMIN_TOKEN environment variable is not set, which can block app usage for authenticated users.",
+    "There are two different global CSS variable sets (frontend/index.css and frontend/src/index.css), which can cause confusion about the active theme source; only src/index.css appears to be used by the app.",
+    "Minor cleanup: App.tsx imports QueryClient/QueryClientProvider but does not use them (QueryClientProvider is set up in main.tsx)."
+  ],
   "isFixRequest": false,
-  "imageRequirements": "## Required Images\n- Flat emblem-style logo with a trophy and subtle Nepali pattern motif, warm orange/charcoal palette (app-logo.dim_512x512.png)\n- Wide hero background illustration showing a competitive tournament vibe with abstract arena lights, warm orange/charcoal palette (hero-bg.dim_1600x900.png)",
-  "generatedImages": [
-    {
-      "filename": "app-logo.dim_512x512.png",
-      "description": "Flat emblem-style logo with a trophy and subtle Nepali pattern motif, warm orange/charcoal palette",
-      "targetWidth": 512,
-      "targetHeight": 512
-    },
-    {
-      "filename": "hero-bg.dim_1600x900.png",
-      "description": "Wide hero background illustration showing a competitive tournament vibe with abstract arena lights, warm orange/charcoal palette",
-      "targetWidth": 1600,
-      "targetHeight": 900
-    }
-  ],
+  "gameProjectType": "none",
   "projectName": "Nepali cash-tournament game platform with verified tournaments, wallet top-ups, and withdrawals via IME Pay/Khalti",
   "clarification_mode": "instant",
   "clarification_rounds": 0

@@ -44,19 +44,19 @@ export default function TopUpPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold mb-2">{t('topUp')}</h1>
+        <h1 className="text-3xl font-bold mb-2 tracking-tight">{t('topUp')}</h1>
         <p className="text-muted-foreground">तपाईंको वालेटमा रकम थप्नुहोस्</p>
       </div>
 
       {/* Top Up Request Form */}
-      <Card>
+      <Card className="border-2 shadow-lg">
         <CardHeader>
-          <div className="flex items-center gap-3">
-            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-              <ArrowUpCircle className="h-6 w-6 text-primary" />
+          <div className="flex items-center gap-4">
+            <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+              <ArrowUpCircle className="h-7 w-7 text-primary" />
             </div>
             <div>
-              <CardTitle>{t('requestTopUp')}</CardTitle>
+              <CardTitle className="text-xl">{t('requestTopUp')}</CardTitle>
               <CardDescription>नयाँ टप अप अनुरोध सिर्जना गर्नुहोस्</CardDescription>
             </div>
           </div>
@@ -64,7 +64,7 @@ export default function TopUpPage() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="amount">{t('topUpAmount')}</Label>
+              <Label htmlFor="amount" className="text-base font-medium">{t('topUpAmount')}</Label>
               <Input
                 id="amount"
                 type="number"
@@ -73,9 +73,10 @@ export default function TopUpPage() {
                 placeholder={t('amountPlaceholder')}
                 min="1"
                 required
+                className="h-11"
               />
             </div>
-            <Button type="submit" disabled={createTopUp.isPending} className="w-full">
+            <Button type="submit" disabled={createTopUp.isPending} className="w-full h-11">
               {createTopUp.isPending ? t('requesting') : t('submit')}
             </Button>
           </form>
@@ -83,9 +84,9 @@ export default function TopUpPage() {
       </Card>
 
       {/* Top Up History */}
-      <Card>
+      <Card className="border-2">
         <CardHeader>
-          <CardTitle>{t('topUpHistory')}</CardTitle>
+          <CardTitle className="text-xl">{t('topUpHistory')}</CardTitle>
           <CardDescription>तपाईंको टप अप अनुरोधहरू</CardDescription>
         </CardHeader>
         <CardContent>
@@ -95,19 +96,19 @@ export default function TopUpPage() {
               <Skeleton className="h-12 w-full" />
             </div>
           ) : history && history.length > 0 ? (
-            <div className="rounded-md border">
+            <div className="rounded-xl border-2 overflow-hidden">
               <Table>
                 <TableHeader>
-                  <TableRow>
-                    <TableHead>{t('amount')}</TableHead>
-                    <TableHead>{t('status')}</TableHead>
-                    <TableHead>{t('date')}</TableHead>
+                  <TableRow className="bg-muted/50">
+                    <TableHead className="font-semibold">{t('amount')}</TableHead>
+                    <TableHead className="font-semibold">{t('status')}</TableHead>
+                    <TableHead className="font-semibold">{t('date')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {history.map((req) => (
-                    <TableRow key={req.id.toString()}>
-                      <TableCell className="font-medium">रू {req.amount.amount.toString()}</TableCell>
+                    <TableRow key={req.id.toString()} className="hover:bg-muted/30">
+                      <TableCell className="font-semibold">रू {req.amount.amount.toString()}</TableCell>
                       <TableCell>
                         <Badge variant={getStatusVariant(req.status)}>{getStatusLabel(req.status)}</Badge>
                       </TableCell>
@@ -120,7 +121,7 @@ export default function TopUpPage() {
               </Table>
             </div>
           ) : (
-            <p className="text-center text-muted-foreground py-8">{t('noTopUpRequests')}</p>
+            <p className="text-center text-muted-foreground py-12 font-medium">{t('noTopUpRequests')}</p>
           )}
         </CardContent>
       </Card>

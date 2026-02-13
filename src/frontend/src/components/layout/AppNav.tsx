@@ -25,7 +25,7 @@ export default function AppNav() {
   }
 
   const NavContent = () => (
-    <nav className="flex flex-col gap-2 p-4">
+    <nav className="flex flex-col gap-1.5 p-4">
       {navItems.map((item) => {
         const Icon = item.icon;
         const isActive = currentPath === item.path;
@@ -33,12 +33,12 @@ export default function AppNav() {
           <Button
             key={item.path}
             variant={isActive ? 'default' : 'ghost'}
-            className="justify-start gap-3"
+            className="justify-start gap-3 h-11"
             onClick={() => navigate({ to: item.path })}
           >
             <Icon className="h-5 w-5" />
             <span>{item.label}</span>
-            {item.path === '/admin' && <Badge variant="secondary" className="ml-auto">Admin</Badge>}
+            {item.path === '/admin' && <Badge variant="secondary" className="ml-auto text-xs">Admin</Badge>}
           </Button>
         );
       })}
@@ -51,7 +51,7 @@ export default function AppNav() {
       <div className="lg:hidden fixed bottom-4 left-4 z-50">
         <Sheet>
           <SheetTrigger asChild>
-            <Button size="icon" className="h-14 w-14 rounded-full shadow-lg">
+            <Button size="icon" className="h-14 w-14 rounded-full shadow-xl">
               <Menu className="h-6 w-6" />
             </Button>
           </SheetTrigger>
@@ -62,7 +62,7 @@ export default function AppNav() {
       </div>
 
       {/* Desktop Navigation */}
-      <aside className="hidden lg:block w-64 border-r bg-card">
+      <aside className="hidden lg:block w-64 border-r bg-card/30 backdrop-blur-sm">
         <NavContent />
       </aside>
     </>

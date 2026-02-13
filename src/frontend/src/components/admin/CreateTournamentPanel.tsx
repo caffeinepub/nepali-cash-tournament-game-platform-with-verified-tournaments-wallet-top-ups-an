@@ -37,14 +37,14 @@ export default function CreateTournamentPanel() {
   };
 
   return (
-    <Card>
+    <Card className="border-2">
       <CardHeader>
-        <div className="flex items-center gap-3">
-          <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-            <Trophy className="h-6 w-6 text-primary" />
+        <div className="flex items-center gap-4">
+          <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+            <Trophy className="h-7 w-7 text-primary" />
           </div>
           <div>
-            <CardTitle>{t('createTournament')}</CardTitle>
+            <CardTitle className="text-xl">{t('createTournament')}</CardTitle>
             <CardDescription>नयाँ प्रतियोगिता सिर्जना गर्नुहोस्</CardDescription>
           </div>
         </div>
@@ -52,18 +52,19 @@ export default function CreateTournamentPanel() {
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name">{t('tournamentName')}</Label>
+            <Label htmlFor="name" className="text-base font-medium">{t('tournamentName')}</Label>
             <Input
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder={t('tournamentNamePlaceholder')}
               required
+              className="h-11"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="entryFee">{t('entryFee')}</Label>
+            <Label htmlFor="entryFee" className="text-base font-medium">{t('entryFee')}</Label>
             <Input
               id="entryFee"
               type="number"
@@ -72,10 +73,11 @@ export default function CreateTournamentPanel() {
               placeholder="0"
               min="0"
               required
+              className="h-11"
             />
           </div>
 
-          <Button type="submit" disabled={createTournament.isPending} className="w-full">
+          <Button type="submit" disabled={createTournament.isPending} className="w-full h-11">
             {createTournament.isPending ? t('creating') : t('submit')}
           </Button>
         </form>

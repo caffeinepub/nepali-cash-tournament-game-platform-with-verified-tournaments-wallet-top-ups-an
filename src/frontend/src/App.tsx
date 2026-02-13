@@ -14,6 +14,7 @@ import WithdrawPage from './pages/WithdrawPage';
 import AdminPage from './pages/AdminPage';
 import { ThemeProvider } from 'next-themes';
 import { Toaster } from '@/components/ui/sonner';
+import { useEffect } from 'react';
 
 function RootLayout() {
   const { identity, isInitializing } = useInternetIdentity();
@@ -21,6 +22,10 @@ function RootLayout() {
   
   const isAuthenticated = !!identity;
   const showProfileSetup = isAuthenticated && !profileLoading && isFetched && userProfile === null;
+
+  useEffect(() => {
+    document.title = 'Nepal Top Up Center';
+  }, []);
 
   if (isInitializing) {
     return (

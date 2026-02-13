@@ -31,14 +31,14 @@ export default function TournamentsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold mb-2">{t('allTournaments')}</h1>
+        <h1 className="text-3xl font-bold mb-2 tracking-tight">{t('allTournaments')}</h1>
         <p className="text-muted-foreground">प्रतियोगितामा सामेल हुनुहोस् र पुरस्कार जित्नुहोस्</p>
       </div>
 
       {/* Add Tournament ID */}
-      <Card>
+      <Card className="border-2">
         <CardHeader>
-          <CardTitle>{t('addTournamentId')}</CardTitle>
+          <CardTitle className="text-xl">{t('addTournamentId')}</CardTitle>
           <CardDescription>प्रतियोगिता हेर्न ID थप्नुहोस्</CardDescription>
         </CardHeader>
         <CardContent>
@@ -50,9 +50,10 @@ export default function TournamentsPage() {
                 value={newId}
                 onChange={(e) => setNewId(e.target.value)}
                 placeholder={t('tournamentId')}
+                className="h-11"
               />
             </div>
-            <Button type="submit">
+            <Button type="submit" className="h-11">
               <Plus className="h-4 w-4 mr-2" />
               {t('addTournament')}
             </Button>
@@ -62,19 +63,23 @@ export default function TournamentsPage() {
 
       {/* Tournament List */}
       {tournamentIds.length === 0 ? (
-        <Card>
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <Trophy className="h-16 w-16 text-muted-foreground mb-4" />
-            <p className="text-muted-foreground text-center">{t('noTournaments')}</p>
+        <Card className="border-2">
+          <CardContent className="flex flex-col items-center justify-center py-16">
+            <div className="h-16 w-16 rounded-2xl bg-muted flex items-center justify-center mb-4">
+              <Trophy className="h-8 w-8 text-muted-foreground" />
+            </div>
+            <p className="text-muted-foreground text-center font-medium">{t('noTournaments')}</p>
           </CardContent>
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {tournamentIds.map((id) => (
-            <Card key={id} className="hover:shadow-lg transition-shadow">
+            <Card key={id} className="hover:shadow-xl hover:scale-[1.02] transition-all border-2">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Trophy className="h-5 w-5 text-primary" />
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <Trophy className="h-5 w-5 text-primary" />
+                  </div>
                   प्रतियोगिता
                 </CardTitle>
                 <CardDescription className="font-mono text-xs truncate">{id}</CardDescription>

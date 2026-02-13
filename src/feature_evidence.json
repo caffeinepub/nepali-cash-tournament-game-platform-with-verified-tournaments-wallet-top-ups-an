@@ -2,15 +2,12 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-add-internet-identity-authentication-and-a-basic-role-model-regular-user-vs-admin-so-admins-can-verify-tournaments-and-approve-top-ups-withdrawals",
-      "featureTitle": "Add Internet Identity authentication and a basic role model (regular user vs admin) so admins can verify tournaments and approve top-ups/withdrawals.",
+      "featureId": "feature-update-the-app-branding-text-so-the-app-displays-the-new-brand-name-nepal-top-up-center-consistently-across-the-ui-header-logo-area-and-the-browser-tab-title-metadata",
+      "featureTitle": "Update the app branding text so the app displays the new brand name \"Nepal Top Up Center\" consistently across the UI (header/logo area) and the browser tab title/metadata.",
       "files": [
+        "frontend/index.html",
         "frontend/src/App.tsx",
-        "frontend/src/components/auth/AccessDenied.tsx",
-        "frontend/src/components/auth/AdminGuard.tsx",
-        "frontend/src/components/auth/LoginButton.tsx",
-        "frontend/src/components/auth/ProfileSetupDialog.tsx",
-        "frontend/src/hooks/useAuth.ts"
+        "frontend/src/components/layout/AppLayout.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -21,158 +18,27 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-1"
+        "REQ-10"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-implement-a-verified-tournaments-system-create-tournaments-mark-tournaments-as-verified-admin-only-allow-users-to-join-verified-tournaments-record-results-and-distribute-prizes-to-winners-in-app-wallets",
-      "featureTitle": "Implement a verified tournaments system: create tournaments, mark tournaments as verified (admin-only), allow users to join verified tournaments, record results, and distribute prizes to winners’ in-app wallets.",
+      "featureId": "feature-implement-a-coherent-new-visual-theme-for-the-nepal-top-up-center-brand-by-adjusting-tailwind-css-theme-tokens-colors-typography-surface-background-buttons-cards-and-applying-them-consistently-across-existing-pages-dashboard-tournaments-wallet-top-up-withdraw-admin-use-english-for-any-new-user-facing-text",
+      "featureTitle": "Implement a coherent new visual theme for the \"Nepal Top Up Center\" brand by adjusting Tailwind/CSS theme tokens (colors, typography, surface/background, buttons, cards) and applying them consistently across existing pages (Dashboard, Tournaments, Wallet, Top Up, Withdraw, Admin). Use English for any new user-facing text.",
       "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/hooks/useTournaments.ts",
-        "frontend/src/lib/tournamentStore.ts",
-        "frontend/src/pages/AdminPage.tsx",
-        "frontend/src/pages/TournamentDetailPage.tsx",
-        "frontend/src/pages/TournamentsPage.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-2"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-an-in-app-wallet-with-transaction-history-to-support-tournament-entry-fees-winnings-credits-and-admin-approved-top-ups",
-      "featureTitle": "Add an in-app wallet with transaction history to support tournament entry fees, winnings credits, and admin-approved top-ups.",
-      "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/hooks/useWallet.ts",
-        "frontend/src/pages/WalletPage.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-3"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-implement-wallet-top-up-requests-users-can-create-a-top-up-request-admins-can-approve-mark-it-as-paid-wallet-balance-updates-only-on-admin-approval",
-      "featureTitle": "Implement wallet top-up requests: users can create a top-up request; admins can approve/mark it as paid; wallet balance updates only on admin approval.",
-      "files": [
-        "frontend/src/App.tsx",
+        "frontend/src/components/admin/CreateTournamentPanel.tsx",
         "frontend/src/components/admin/TopUpRequestsPanel.tsx",
-        "frontend/src/hooks/useTopUps.ts",
-        "frontend/src/pages/AdminPage.tsx",
-        "frontend/src/pages/TopUpPage.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-4"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-implement-tournament-winnings-withdrawal-requests-users-can-request-withdrawal-of-available-wallet-funds-select-ime-pay-or-khalti-provide-payout-identifier-details-and-track-status-admins-can-approve-reject-mark-completed",
-      "featureTitle": "Implement tournament winnings withdrawal requests: users can request withdrawal of available wallet funds, select IME Pay or Khalti, provide payout identifier details, and track status; admins can approve/reject/mark completed.",
-      "files": [
-        "frontend/src/App.tsx",
+        "frontend/src/components/admin/VerifyTournamentPanel.tsx",
         "frontend/src/components/admin/WithdrawalRequestsPanel.tsx",
-        "frontend/src/hooks/useWithdrawals.ts",
-        "frontend/src/pages/AdminPage.tsx",
-        "frontend/src/pages/WithdrawPage.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-5"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-make-the-app-localized-for-nepali-default-ui-language-nepali-across-all-screens-with-a-simple-localization-structure-so-text-can-be-maintained-consistently",
-      "featureTitle": "Make the app localized for Nepali: default UI language Nepali across all screens, with a simple localization structure so text can be maintained consistently.",
-      "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/i18n/index.ts",
-        "frontend/src/i18n/np.ts",
-        "frontend/src/pages/AdminPage.tsx",
-        "frontend/src/pages/TopUpPage.tsx",
-        "frontend/src/pages/TournamentDetailPage.tsx",
-        "frontend/src/pages/TournamentsPage.tsx",
-        "frontend/src/pages/WalletPage.tsx",
-        "frontend/src/pages/WithdrawPage.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-6"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-create-core-screens-and-navigation-1-home-dashboard-2-tournaments-list-tournament-detail-join-3-wallet-balance-transactions-4-top-up-request-5-withdraw-request-status-list-6-admin-area-for-verification-results-top-up-approvals-withdraw-approvals",
-      "featureTitle": "Create core screens and navigation: (1) Home/Dashboard, (2) Tournaments list + tournament detail/join, (3) Wallet (balance + transactions), (4) Top-up request, (5) Withdraw request + status list, (6) Admin area for verification/results/top-up approvals/withdraw approvals.",
-      "files": [
-        "frontend/src/App.tsx",
         "frontend/src/components/layout/AppLayout.tsx",
         "frontend/src/components/layout/AppNav.tsx",
-        "frontend/src/hooks/queryKeys.ts",
-        "frontend/src/pages/DashboardPage.tsx",
-        "frontend/src/utils/errorMapping.ts"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-7"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-define-a-coherent-visual-theme-for-the-entire-ui-colors-typography-spacing-components-styling-and-apply-it-consistently-across-all-screens-avoid-a-blue-purple-primary-palette",
-      "featureTitle": "Define a coherent visual theme for the entire UI (colors, typography, spacing, components styling) and apply it consistently across all screens; avoid a blue/purple primary palette.",
-      "files": [
-        "frontend/src/components/layout/AppLayout.tsx",
         "frontend/src/index.css",
+        "frontend/src/pages/AdminPage.tsx",
+        "frontend/src/pages/DashboardPage.tsx",
+        "frontend/src/pages/TopUpPage.tsx",
+        "frontend/src/pages/TournamentsPage.tsx",
+        "frontend/src/pages/WalletPage.tsx",
+        "frontend/src/pages/WithdrawPage.tsx",
         "frontend/tailwind.config.js"
       ],
       "components": [
@@ -184,27 +50,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-8"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-generated-static-image-assets-and-use-them-in-the-ui-e-g-app-header-logo-and-a-landing-hero-background-served-from-frontend-public-assets-generated",
-      "featureTitle": "Add generated static image assets and use them in the UI (e.g., app header/logo and a landing/hero background), served from frontend/public/assets/generated.",
-      "files": [
-        "frontend/src/components/layout/AppLayout.tsx",
-        "frontend/src/pages/DashboardPage.tsx"
-      ],
-      "components": [
-        "authorization@4.0.0",
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-9"
+        "REQ-11"
       ],
       "confidence": "high"
     }

@@ -22,14 +22,14 @@ export default function TopUpRequestsPanel() {
   };
 
   return (
-    <Card>
+    <Card className="border-2">
       <CardHeader>
-        <div className="flex items-center gap-3">
-          <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-            <ArrowUpCircle className="h-6 w-6 text-primary" />
+        <div className="flex items-center gap-4">
+          <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+            <ArrowUpCircle className="h-7 w-7 text-primary" />
           </div>
           <div>
-            <CardTitle>{t('topUpRequests')}</CardTitle>
+            <CardTitle className="text-xl">{t('topUpRequests')}</CardTitle>
             <CardDescription>सबै टप अप अनुरोधहरू</CardDescription>
           </div>
         </div>
@@ -41,21 +41,21 @@ export default function TopUpRequestsPanel() {
             <Skeleton className="h-12 w-full" />
           </div>
         ) : requests && requests.length > 0 ? (
-          <div className="rounded-md border overflow-x-auto">
+          <div className="rounded-xl border-2 overflow-hidden">
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead>{t('user')}</TableHead>
-                  <TableHead>{t('amount')}</TableHead>
-                  <TableHead>{t('status')}</TableHead>
-                  <TableHead>{t('actions')}</TableHead>
+                <TableRow className="bg-muted/50">
+                  <TableHead className="font-semibold">{t('user')}</TableHead>
+                  <TableHead className="font-semibold">{t('amount')}</TableHead>
+                  <TableHead className="font-semibold">{t('status')}</TableHead>
+                  <TableHead className="font-semibold">{t('actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {requests.map((req) => (
-                  <TableRow key={req.id.toString()}>
+                  <TableRow key={req.id.toString()} className="hover:bg-muted/30">
                     <TableCell className="font-mono text-xs">{req.userId.toString().slice(0, 10)}...</TableCell>
-                    <TableCell className="font-medium">रू {req.amount.amount.toString()}</TableCell>
+                    <TableCell className="font-semibold">रू {req.amount.amount.toString()}</TableCell>
                     <TableCell>
                       <Badge variant={req.status === 'pending' ? 'default' : 'secondary'}>
                         {req.status === 'pending' ? t('pending') : t('completed')}
@@ -78,7 +78,7 @@ export default function TopUpRequestsPanel() {
             </Table>
           </div>
         ) : (
-          <p className="text-center text-muted-foreground py-8">{t('noRequests')}</p>
+          <p className="text-center text-muted-foreground py-12 font-medium">{t('noRequests')}</p>
         )}
       </CardContent>
     </Card>
